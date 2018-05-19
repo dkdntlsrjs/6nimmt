@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>1번</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var socket = io();
+			var myId = sessionStorage.getItem('sessionId');
+			var state = 0; //0 대기, 1 준비
+			window.onload = function(){
+				socket.emit('userIn',1,myId);
+			}
+			socket.on('userIn_',function(room1data,n){
+				if(n!=1)
+					return;
+				var li = document.getElementById('userList');
+				var li_len = li.childElementCount;
+				for(var i = 0;i<li_len;i++){
+					li.removeChild(document.getElementById("u"+i));
+				}
+				for(var i = 0;i<room1data.length;i++){
+					var l = document.createElement('div');
+					l.id = "u"+i;
+					l.innerHTML = room1data[i].name;
+					l.style.display="block";
+					document.getElementById('userList').appendChild(l);
+				}
+			});
+
+			function ready_click()
+			{
+				if(document.getElementById('userList').childElementCount <2)
+				{
+					alert("최소 2인 필요");
+				}
+				else
+				{
+					socket.emit('ready',1);
+				}
+			}
+
+			socket.on('ready_',function(room_info){
+				document.getElementById("ready").style.display = "none";
+				console.log(room_info);
+				state = 1;
+			});
+
+		</script>
+
+	</head>
+	<body>
+		<div id ="userList">
+
+		</div>
+		<div id = "ready" onclick = "ready_click()" style = "display : block">
+			ready
+		</div>
+		<div id = "mainField">
+
+		</div>
+		<div id = "subField">
+		</div>
+		<div id = "myCard" style = "visibility:hidden">
+		</div>
+		<div id = "chat">
+		</div>
+	</body>
+</html>

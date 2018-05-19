@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<title> 젝스님트 </title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			window.onload = function(){
+				socket.emit('userCount');
+			}
+			var socket = io();
+			function joinR()
+			{
+				var l = document.getElementById("list");
+				socket.emit('userCount');
+				
+			}
+			function join(n){
+				socket.emit('userCount');
+				console.log(document.getElementById('ID').value);
+				if(document.getElementById('ID').value == ""){
+					alert("ID를 입력하세요");
+					socket.emit('userCount');
+					return;
+				}
+				sessionStorage.setItem('sessionId',document.getElementById('ID').value);
+				if(document.getElementById('r'+n).innerHTML >=10){
+					alert("방이 가득 찼습니다.");
+					socket.emit('userCount');
+					return;
+				}
+				else{
+					socket.emit('join',n);
+					location.href="/room1";
+				}
+				socket.emit('userCount');
+			}
+			socket.on('hereIsUser',function(room1,room2,room3){
+				document.getElementById('r1').innerHTML = room1;
+				document.getElementById('r2').innerHTML = room2;
+				document.getElementById('r3').innerHTML = room3;
+			});
+		</script>
+	</head>
+	<body>
+		ID : <input type="text" id = "ID" ></input> 
+		<div onclick = "joinR()" >방 참가하기</div>
+		<br/>
+		<table id = "list">
+			<tr>
+				<td>1</td>
+				<td id = "r1" onclick = "join(1)"></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td id = "r2" onclick = "join(2)"></td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td id = "r3" onclick = "join(3)"></td>
+			</tr>
+		</table>
+	</body>
+<html>
