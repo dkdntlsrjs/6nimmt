@@ -26,7 +26,6 @@ io.on('connection', function(socket){
 	for(var i =0;i<room1data.length;i++){
 		if(room1data[i].id == socket.id){
 			trash1 = room1data.splice(i,1);
-			console.log(trash1);
 			io.emit('userIn_',room1data,1);
 		}
 	}
@@ -104,7 +103,6 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('server on!');
 });
-
 
 function user(id,myId)
 {
