@@ -26,6 +26,7 @@ io.on('connection', function(socket){
 	for(var i =0;i<room1data.length;i++){
 		if(room1data[i].id == socket.id){
 			trash1 = room1data.splice(i,1);
+			console.log(trash1);
 			io.emit('userIn_',room1data,1);
 		}
 	}
@@ -78,11 +79,11 @@ io.on('connection', function(socket){
 			io.emit('userIn_',room1data,1);
 	  }
 	  else if (n ==2){
-		  room2data[room2data.length] = new user(socket.id,myId);
+		  room2data[room2data.length] = new user(socket.id);
 		  io.emit('userIn_',room2data,2);
 	  }
 	  else if (n ==3){
-		  room3data[room3data.length] = new user(socket.id,myId);
+		  room3data[room3data.length] = new user(socket.id);
 		  io.emit('userIn_',room3data,3);
 	  }
 	  io.emit('hereIsUser',room1data.length,room2data.length,room3data.length);
@@ -98,11 +99,13 @@ io.on('connection', function(socket){
 
     io.emit('ready_', room_ing[0]);
   });
+  
 });
 
 http.listen(3000, function(){
   console.log('server on!');
 });
+
 
 function user(id,myId)
 {

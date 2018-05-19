@@ -7,7 +7,10 @@
 		<script>
 			var socket = io();
 			var myId = sessionStorage.getItem('sessionId');
+			
 			var state = 0; //0 대기, 1 준비
+			var my;
+			
 			window.onload = function(){
 				socket.emit('userIn',1,myId);
 			}
@@ -25,6 +28,11 @@
 					l.innerHTML = room1data[i].myId;
 					l.style.display="block";
 					document.getElementById('userList').appendChild(l);
+					
+					if(room1data[i].myId == myId)
+					{
+						my = room1data[i];
+					}
 				}
 			});
 
@@ -42,10 +50,15 @@
 
 			socket.on('ready_',function(room_info){
 				document.getElementById("ready").style.display = "none";
-				console.log(room_info);
+				for(var i =0;i<room_info.roomdata.length;i++){
+					if(room_info.roomdata[i].myId == myId){
+						my = room_info.roomdata[i];
+						console.log(my);
+					}
+				}
 				state = 1;
 			});
-
+			
 		</script>
 
 	</head>
