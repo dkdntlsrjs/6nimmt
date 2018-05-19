@@ -70,20 +70,20 @@ io.on('connection', function(socket){
   socket.on('userIn', function(n,myId){
 	  if(n==1){
 			if(trash1 != null && trash1[0].myId == myId){
-				room1data[room1data.length] = new user(trash1[0].name,socket.id,trash1[0].myId);
+				room1data[room1data.length] = new user(socket.id,trash1[0].myId);
 			}
 			else{
-				room1data[room1data.length] = new user(name,socket.id,myId);
+				room1data[room1data.length] = new user(socket.id,myId);
 			}
 			trash1=null;
 			io.emit('userIn_',room1data,1);
 	  }
 	  else if (n ==2){
-		  room2data[room2data.length] = new user(name,socket.id);
+		  room2data[room2data.length] = new user(socket.id,myId);
 		  io.emit('userIn_',room2data,2);
 	  }
 	  else if (n ==3){
-		  room3data[room3data.length] = new user(name,socket.id);
+		  room3data[room3data.length] = new user(socket.id,myId);
 		  io.emit('userIn_',room3data,3);
 	  }
 	  io.emit('hereIsUser',room1data.length,room2data.length,room3data.length);
@@ -106,9 +106,8 @@ http.listen(3000, function(){
 });
 
 
-function user(name,id,myId)
+function user(id,myId)
 {
-	this.name = name;
 	this.penalty = 0;
 	this.card = new Array(10);
 	this.id = id;
