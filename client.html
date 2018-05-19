@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Chat</title>
+    <style>
+      .chat_log{ width: 95%; height: 200px; }
+      .name{ width: 10%; }
+      .message{ width: 70%; }
+      .chat{ width: 10%; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <textarea id="chatLog" class="chat_log" readonly></textarea>
+    </div>
+    <form id="chat">
+      <input id="name" class="name" type="text" readonly>
+      <input id="message" class="message" onkeypress="key_(event)" type="text">
+      <input type="submit" class="chat" onclick = "ev(event)" value="chat"/>
+    </form>
+    <div id="box" class="box">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+	  function key_(event){
+		if (event.key == "Enter") 
+                    ev(e);
+	  }
+      function ev(e){
+		var n = document.getElementById("name");
+		var m = document.getElementById("message");
+		socket.emit('room');
+        socket.emit('send message', n.value, m.value);
+		m.value = "";
+        m.focus();
+        e.preventDefault();
+      }
+      socket.on('receive message', function(msg){
+		var chatL = document.getElementById("chatLog");
+        chatL.append(msg+'\n');
+		chatL.scrollTop = chatL.scrollHeight;
+      });
+      socket.on('change name', function(name){
+		document.getElementById("name").value = name;
+      });
+	  socket.on('roomCount', function(room){
+		var chatL = document.getElementById("chatLog");
+		chatL.append(room+'\n');
+		chatL.scrollTop = chatL.scrollHeight;
+	  });
+    </script>
+  </body>
+</html>
