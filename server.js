@@ -2,9 +2,11 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var fs = require('fs');
 var room = 0, room1 = 0 , room2 = 0 , room3 = 0;
 var room1data = new Array(), room2data = new Array(), room3data = new Array();
 var trash1;
+var path = require('path');
 
 var room_ing = new Array(3);
 
@@ -16,6 +18,18 @@ app.get('/room1',function(req, res){
   res.sendFile(__dirname + '/room1.html');
 
 });
+/*
+app.get('/img',function(req,res){
+	for(var i=1;i<105;i++){
+		fs.readFile("card_img/i"+".png",function (error,data){
+			res.writeHead(200,{'content-type':'text/html'});
+			res.end(data);
+		});
+	}
+});*/
+//app.use('/public',express.static('public'));
+app.use("/img", express.static(path.join(__dirname, "card_img")));
+
 var count=1;
 io.on('connection', function(socket){
   console.log('user connected: ', socket.id);
@@ -129,23 +143,23 @@ function card_deck()
   {
     if(this.i == 55)
     {
-      this.card_deck[this.i-1] = new card_(this.i, 7,this.i);
+      this.card_deck[this.i-1] = new card_(this.i, 7,"/img/"+this.i+".png");
     }
     else if(this.i%11 == 0)
     {
-      this.card_deck[this.i-1] = new card_(this.i, 5,this.i);
+      this.card_deck[this.i-1] = new card_(this.i, 5,"/img/"+this.i+".png");
     }
     else if(this.i%10 == 0)
     {
-      this.card_deck[this.i-1] = new card_(this.i, 3,this.i);
+      this.card_deck[this.i-1] = new card_(this.i, 3,"/img/"+this.i+".png");
     }
     else if(this.i%5 == 0)
     {
-      this.card_deck[this.i-1] = new card_(this.i, 2,this.i);
+      this.card_deck[this.i-1] = new card_(this.i, 2,"/img/"+this.i+".png");
     }
     else
     {
-      this.card_deck[this.i-1] = new card_(this.i, 1,this.i);
+      this.card_deck[this.i-1] = new card_(this.i, 1,"/img/"+this.i+".png");
     }
   }
   return this.card_deck;

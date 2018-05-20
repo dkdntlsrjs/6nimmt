@@ -12,6 +12,7 @@
 			var my;
 			
 			window.onload = function(){
+			
 				socket.emit('userIn',1,myId);
 			}
 			socket.on('userIn_',function(room1data,n){
@@ -51,10 +52,14 @@
 			socket.on('ready_',function(room_info){
 				document.getElementById("ready").style.display = "none";
 				for(var i =0;i<room_info.roomdata.length;i++){
-					if(room_info.roomdata[i].myId == myId){
+					if(room_info.roomdata[i].myId == myId)
 						my = room_info.roomdata[i];
-						console.log(my);
-					}
+				}
+				var mC = document.getElementById("myCard");
+				for(var i=0;i<10;i++){
+					var c = document.createElement('img');
+					c.src = my.card[i].card_img;
+					mC.appendChild(c);
 				}
 				state = 1;
 			});
@@ -74,7 +79,7 @@
 		</div>
 		<div id = "subField">
 		</div>
-		<div id = "myCard" style = "visibility:hidden">
+		<div id = "myCard">
 		</div>
 		<div id = "chat">
 		</div>
