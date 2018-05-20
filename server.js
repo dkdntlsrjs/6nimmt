@@ -18,16 +18,6 @@ app.get('/room1',function(req, res){
   res.sendFile(__dirname + '/room1.html');
 
 });
-/*
-app.get('/img',function(req,res){
-	for(var i=1;i<105;i++){
-		fs.readFile("card_img/i"+".png",function (error,data){
-			res.writeHead(200,{'content-type':'text/html'});
-			res.end(data);
-		});
-	}
-});*/
-//app.use('/public',express.static('public'));
 app.use("/img", express.static(path.join(__dirname, "card_img")));
 
 var count=1;
