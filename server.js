@@ -94,12 +94,18 @@ io.on('connection', function(socket){
   });
 
   socket.on('ready', function(room_num){
-    if(room_num == 1)
+    if(room_num == 1){
       room_ing[0] = new prepare(room1data);
-    else if(room_num==2)
+	  room1data = room_ing[0].roomdata;
+	}
+    else if(room_num==2){
       room_ing[1] = new prepare(room2data);
-    else if(room_num==3)
+	  room2data = room_ing[1].roomdata;
+	}
+    else if(room_num==3){
       room_ing[2] = new prepare(room3data);
+	  room3data = room_ing[2].roomdata;
+	}
 
     io.emit('ready_', room_ing[0]);
   });
@@ -160,17 +166,18 @@ function prepare(room_data)
   this.roomdata = room_data;
   this.deck_ = card_deck();
   this.mainFieldCard= new Array(4);
-  this.userCardArray = new Array();
 
   for(this.i = 0; this.i<this.roomdata.length; this.i++)
   {
-    this.userCardArray[this.i] = this.roomdata[this.i];
     for(this.j = 0; this.j<10; this.j++)
     {
       this.ran = Math.floor(Math.random() * this.deck_.length);
-      this.userCardArray[this.i].card[this.j] = this.deck_[this.ran];
+      this.roomdata[this.i].card[this.j] = this.deck_[this.ran];
       this.deck_.splice(this.ran,1);
     }
+	this.roomdata[this.i].card.sort(function (a, b) { 
+		return a.name_num < b.name_num ? -1 : a.name_num > b.name_num ? 1 : 0;  
+	});
   }
 
   for(this.i = 0; this.i < 4; this.i++)
