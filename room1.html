@@ -13,8 +13,6 @@
 			
 			window.onload = function(){
 				socket.emit('userIn',1,myId);
-				if(state == 0)
-					document.getElementById("ready").style.display = "block";
 			}
 			socket.on('userIn_',function(room1data,n){
 				if(n!=1)
